@@ -1,0 +1,5 @@
+**MOVEMENT**
+ - Bielby idea - set function to move n cm
+ - Other idea - triangulate position using one or two cameras, move specified distance
+**AUTONOMOUS**
+ - 
