@@ -5,6 +5,7 @@ import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.Servo;
 import com.qualcomm.robotcore.util.ElapsedTime;
+import java.lang.Math; 
 
 @Autonomous(name="LAuto", group="Autonomous")
 public class LeftAnomous extends LinearOpMode {
@@ -62,19 +63,72 @@ public class LeftAnomous extends LinearOpMode {
          * All of the following assumes:
          * 1. Looking at the field from the red wall.
          * 2. Origin is the center of the field.
-         * 3. Robot is positioned as if it were its center. 
+         * Robot is positioned as if it were its center. 
          * If it were centered on the origin, it would be at 0, 0
-         * 4. X axis runs from -72 to 72 as you go from left to right. 
-         * 5. Y axis runs from -72 to 72 as you go further away from red wall.
+         * X axis runs from -72 to 72 as you go from left to right
+         * Y axis runs from -72 to 72 as you go further away from red wall.
          * (Both of the above as per https://ftc-docs.firstinspires.org/en/latest/game_specific_resources/field_coordinate_system/field-coordinate-system.html)
-         * 6. Facing is with 0 as pointing straight down Y axis
+         * Facing is with 0 as pointing straight down Y axis, 360 degrees points you straight down again
          * 
          */
         double xPos = 0;
         double yPos = 0;
         //rotation as described above
         double facing = 0;
-        private void toPos(int x, int y)
+
+
+        double forPos
+
+        // Set target position. Needs to be calibrated
+        int ticksPerInch = 1000; 
+        
+        private void toPos(double xDest, double yDest, double dDest) {
+            // Reset encoders
+            frontLeftMotor.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+            frontRightMotor.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+            backLeftMotor.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+            backRightMotor.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+
+            // Set to use encoders
+            frontLeftMotor.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+            frontRightMotor.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+            backLeftMotor.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+            backRightMotor.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+
+            double x = xDest - xPos;
+            double y = yDest - yPos
+            
+            //find distance
+            double hyp = Math.hypot(x, y);
+            
+            //x is opposite, y is adjacent
+            double angle = Math.asin(x/hyp);
+            double radian = Math.toRadians(angle);
+            double cosAngle = Math.cos(radian);
+            double sinAngle = Math.sin(radian);
+
+            int targetTicks = (int) (ticksPerInch * hypot);
+            frontLeftMotor.setTargetPosition(targetTicks);
+            frontRightMotor.setTargetPosition(targetTicks);
+            backLeftMotor.setTargetPosition(targetTicks);
+            backRightMotor.setTargetPosition(targetTicks);
+            
+            //Move
+            frontLeftMotor.setPower(1);
+            frontRightMotor.setPower(1);
+    
+            //Stop moving
+            leftMotor.setPower(0);
+            rightMotor.setPower(0);
+        }
+        /*
+        * Move to position x, y and facing d. 
+        */
+
+        //camera pseudocode for if i get that 
+        private void toPosCamera(int x, int y, int d) {
+
+        }
         if (opModeIsActive()) {
             runtime.reset();
 
