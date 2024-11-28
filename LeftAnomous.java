@@ -96,27 +96,37 @@ public class LeftAnomous extends LinearOpMode {
             backRightMotor.setMode(DcMotor.RunMode.RUN_TO_POSITION);
 
             double x = xDest - xPos;
-            double y = yDest - yPos
-            
+            double y = yDest - yPos;
+
             //find distance
             double hyp = Math.hypot(x, y);
             
             //x is opposite, y is adjacent
             double angle = Math.asin(x/hyp);
             double radian = Math.toRadians(angle);
-            double cosAngle = Math.cos(radian);
-            double sinAngle = Math.sin(radian);
+            double PIover4 = Math.PI/4
+            double FRBL = Math.sin(angle - PIover4)
+            double FLBR = Math.sin(angle + PIover4)
 
-            int targetTicks = (int) (ticksPerInch * hypot);
-            frontLeftMotor.setTargetPosition(targetTicks);
-            frontRightMotor.setTargetPosition(targetTicks);
-            backLeftMotor.setTargetPosition(targetTicks);
-            backRightMotor.setTargetPosition(targetTicks);
+
+            frontLeftMotor.setTargetPosition(ticksPerInch * FLBR);
+            frontRightMotor.setTargetPosition(ticksPerInch * FRBL);
+            backLeftMotor.setTargetPosition(ticksPerInch * FRBL);
+            backRightMotor.setTargetPosition(ticksPerInch * FLBR);
             
             //Move
-            frontLeftMotor.setPower(1);
-            frontRightMotor.setPower(1);
+            frontLeftMotor.setPower(FLBR);
+            frontRightMotor.setPower(FRBL);
+            backLeftMotor.setPower(FRBL);
+            backRightMotor.setPower(FLBR);
     
+            while (frontLeftMotor.isBusy() || frontRightMotor.isBusy(), backLeftMotor.isBusy(), backRightMotor.isBusy()) {
+                telemetry.addData("Motors", 
+                frontLeft.getCurrentPosition() + " " +
+                frontRight.getCurrentPosition() + " " +
+                backLeft.getCurrentPosition() + " " +
+                backRight.getCurrentPosition());
+            }
             //Stop moving
             leftMotor.setPower(0);
             rightMotor.setPower(0);
