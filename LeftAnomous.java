@@ -120,7 +120,7 @@ public class LeftAnomous extends LinearOpMode {
             frontRightMotor.setPower(FRBL / normalize);
             backLeftMotor.setPower(FRBL / normalize);
             backRightMotor.setPower(FLBR / normalize);
-    
+
             while (frontLeftMotor.isBusy() || frontRightMotor.isBusy(), backLeftMotor.isBusy(), backRightMotor.isBusy()) {
                 telemetry.addData("Motors", 
                 frontLeft.getCurrentPosition() + " " +
@@ -128,7 +128,7 @@ public class LeftAnomous extends LinearOpMode {
                 backLeft.getCurrentPosition() + " " +
                 backRight.getCurrentPosition());
             }
-            //Stop moving
+            //Stop moving and be at new spot
             xPos = xDest;
             yPos = yDest;
             leftMotor.setPower(0);
