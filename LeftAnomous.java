@@ -76,10 +76,7 @@ public class LeftAnomous extends LinearOpMode {
         //rotation as described above
         double facing = 0;
 
-
-        double forPos
-
-        // Set target position. Needs to be calibrated
+        // Set target position. NEEDS TO BE CALIBRATED
         int ticksPerInch = 1000; 
         
         private void toPos(double xDest, double yDest, double dDest) {
@@ -114,11 +111,15 @@ public class LeftAnomous extends LinearOpMode {
             backLeftMotor.setTargetPosition(ticksPerInch * FRBL);
             backRightMotor.setTargetPosition(ticksPerInch * FLBR);
             
-            //Move
-            frontLeftMotor.setPower(FLBR);
-            frontRightMotor.setPower(FRBL);
-            backLeftMotor.setPower(FRBL);
-            backRightMotor.setPower(FLBR);
+            //if true, normalize by FRBL, else normalize by FLBR
+            double normalize = FLBR
+            if (FLBR > FRBL) {
+                normalize = FRBL
+            }
+            frontLeftMotor.setPower(FLBR / normalize);
+            frontRightMotor.setPower(FRBL / normalize);
+            backLeftMotor.setPower(FRBL / normalize);
+            backRightMotor.setPower(FLBR / normalize);
     
             while (frontLeftMotor.isBusy() || frontRightMotor.isBusy(), backLeftMotor.isBusy(), backRightMotor.isBusy()) {
                 telemetry.addData("Motors", 
@@ -128,6 +129,8 @@ public class LeftAnomous extends LinearOpMode {
                 backRight.getCurrentPosition());
             }
             //Stop moving
+            xPos = xDest;
+            yPos = yDest;
             leftMotor.setPower(0);
             rightMotor.setPower(0);
         }
